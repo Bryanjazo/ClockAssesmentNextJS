@@ -55,31 +55,30 @@ export default function Time({ time }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setEdit(!isEdit);
 
     if (minute > 59) {
       alert("Invalid number... minute cant go higher than 59");
-    }
-    if (Milliseconds > 99) {
+    } else if (Milliseconds > 99) {
       alert("Invalid number... Milliseconds cant go higher than 99");
+    } else {
+      const update = await fetch(
+        `http://localhost:5000/api/v1/clocks/${time.data._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({
+            time: `${hour}:${minute}:${Milliseconds}`,
+          }),
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          dispatch(addSingleTime(data.data.time));
+        });
+      setEdit(!isEdit);
     }
-
-    const update = await fetch(
-      `http://localhost:5000/api/v1/clocks/${time.data._id}`,
-      {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          time: `${hour}:${minute}:${Milliseconds}`,
-        }),
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        dispatch(addSingleTime(data.data.time));
-      });
   };
 
   if (isEdit) {
