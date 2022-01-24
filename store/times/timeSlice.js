@@ -35,6 +35,10 @@ const timeSlice = createSlice({
     addSingleTime(state, action) {
       state.oneTime = action.payload;
     },
+    navigateHome(state, action) {
+      state.timeItems = [];
+      state.addedItems = [];
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getTimes.fulfilled, (state, action) => {
@@ -42,6 +46,7 @@ const timeSlice = createSlice({
     });
   },
 });
-export const { setTime, addTime, cleatTime, addSingleTime } = timeSlice.actions;
+export const { setTime, addTime, cleatTime, addSingleTime, navigateHome } =
+  timeSlice.actions;
 
 export default timeSlice.reducer;

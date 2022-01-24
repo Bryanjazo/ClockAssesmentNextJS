@@ -3,7 +3,11 @@ import React, { useEffect, useState } from "react";
 import style from "../../../styles/stopWatch.module.scss";
 import cont from "../../../styles/Home.module.css";
 import { useRouter } from "next/router";
-import { cleatTime, addSingleTime } from "../../../store/times/timeSlice";
+import {
+  cleatTime,
+  addSingleTime,
+  navigateHome,
+} from "../../../store/times/timeSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function Time({ time }) {
@@ -40,6 +44,12 @@ export default function Time({ time }) {
         console.log(data);
         dispatch(cleatTime(data));
       });
+    const routing = await router.push("/");
+  };
+
+  const handleHome = async (e) => {
+    e.preventDefault();
+    const clear = await dispatch(navigateHome());
     const routing = await router.push("/");
   };
 
@@ -124,9 +134,10 @@ export default function Time({ time }) {
       <div className={cont.container}>
         <h1>{oneTime}</h1>
         <div className={style.btn_grp_time}>
-          <Link href={`/`}>
-            <button className={style.btn1}>Home</button>
-          </Link>
+          <button className={style.btn1} onClick={handleHome}>
+            Home
+          </button>
+
           <button className={style.btn2} onClick={handleEdit}>
             Edit
           </button>
